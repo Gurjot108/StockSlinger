@@ -1,95 +1,50 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+// src/app/page.js
+"use client";
+import React from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import StockChart from "@/components/StockChart";
+import StockData from "@/components/StockData";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
-export default function Home() {
+const stockSymbol = "AAPL"; // Example stock symbol
+
+export default function HomePage() {
+  const { user, isLoading, error } = useUser();
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    <>
+      <Header />
+      <main className="min-h-screen bg-gray-100 p-8">
+        {isLoading && (
+          <div className="text-center text-gray-500">Loading...</div>
+        )}
+        {error && (
+          <div className="text-center text-red-500">{error.message}</div>
+        )}
+        {!isLoading && !error && user ? (
+          <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+            <h1 className="text-3xl font-bold text-blue-600 mb-4">
+              Welcome to StockSlinger
+            </h1>
+            <p className="text-gray-700 mb-4">
+              This is your personalized stock market dashboard. Explore market
+              trends, check stock prices, and manage your portfolio.
+            </p>
+            <div className="mb-6">
+              <StockChart symbol={stockSymbol} />
+            </div>
+            <div>
+              <StockData symbol={stockSymbol} />
+            </div>
+          </div>
+        ) : (
+          <div className="text-center text-gray-700">
+            Please log in to access your personalized stock market dashboard.
+          </div>
+        )}
+      </main>
+      <Footer />
+    </>
   );
 }
