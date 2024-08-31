@@ -1,7 +1,7 @@
 // src/api/fmp.js
 import axios from "axios";
 
-const API_KEY = "MeTRr9SagSmzeBq7lXuTNMV7jxLVuY5Q"; // Replace with your API key
+const API_KEY = "MeT"; // Replace with your API key
 const BASE_URL = "https://financialmodelingprep.com/api/v3";
 
 export const fetchStockData = async (symbol) => {
